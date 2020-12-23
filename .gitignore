@@ -1,8 +1,4 @@
-/node_modules
-yarn.lock
-yarn-error.log
-.vscode
-/dist
-public/css/*.min.css
-public/js/*.min.js
-package-lock.json
+nodejs-mongodb-demo.iml
+/.idea/
+/node_modules/
+npm-debug.log

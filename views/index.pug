@@ -1,0 +1,193 @@
+extends layouts/_layout.pug
+
+block variables
+	- var activePage = 'dashboard';
+	- var activeGroup = 'none';
+
+block content
+	.app-title
+		div
+			h1
+				i.fa.fa-dashboard
+				|  Dashboard
+			p A free and open source Bootstrap 4 admin template
+
+		ul.app-breadcrumb.breadcrumb
+			li.breadcrumb-item
+				i.fa.fa-home.fa-lg
+			li.breadcrumb-item
+				a(href='#') Dashboard
+
+	
+
+	.row
+		.col-md-6.col-lg-6
+			.widget-small.primary.coloured-icon
+				i.icon.fa.fa-search.fa-3x
+				div.info
+					h4 Total Key Search
+					p
+						b #{totalkey}
+
+		.col-md-6.col-lg-6
+			.widget-small.info.coloured-icon
+				i.icon.fa.fa-link.fa-3x
+				div.info
+					h4 Total Link
+					p
+						b #{totallink}
+
+		//- .col-md-6.col-lg-3
+		//- 	.widget-small.warning.coloured-icon
+		//- 		i.icon.fa.fa-files-o.fa-3x
+		//- 		div.info
+		//- 			h4 Uploades
+		//- 			p
+		//- 				b 10
+
+		//- .col-md-6.col-lg-3
+		//- 	.widget-small.danger.coloured-icon
+		//- 		i.icon.fa.fa-star.fa-3x
+		//- 		div.info
+		//- 			h4 Stars
+		//- 			p
+		//- 				b 500
+	
+	.row
+		.col-md-6
+			.tile
+				h3.tile-title Top 10 Key Search
+				table.table
+					thead
+						tr
+							th #
+							th Key Search
+							th Total
+							
+					tbody
+						- var i = 0;
+						each val, uuid in values
+							- i ++;
+							tr
+								td #{i}
+								td: a(href='/table-data-top10key/'+ val[0]) #{val[0]}										
+								td #{val[1]}
+						//- tr
+						//- 	td 1
+						//- 	td Mark
+						//- 	td Otto
+							
+						//- tr
+						//- 	td 2
+						//- 	td Jacob
+						//- 	td Thornton
+							
+						//- tr
+						//- 	td 3
+						//- 	td Larry
+						//- 	td the Bird
+							
+		.col-md-6
+			.tile
+				h3.tile-title Top 10 Link
+				table.table
+					thead
+						tr
+							th #
+							th Link
+							th Total
+							
+					tbody
+						- var i = 0;
+						each link, uuid in links
+							- i ++;
+							tr
+								td #{i}
+								td: a(href='table-data-linkbylink-detail/'+ encodeURIComponent(link[0])) #{link[0]}										
+								td #{link[1]}
+							
+						//- tr
+						//- 	td 2
+						//- 	td Jacob
+						//- 	td Thornton
+							
+						//- tr
+						//- 	td 3
+						//- 	td Larry
+						//- 	td the Bird
+											
+	//- .row
+	//- 	.col-md-6
+	//- 		.tile
+	//- 			h3.tile-title Monthly Sales
+	//- 			.embed-responsive.embed-responsive-16by9
+	//- 				canvas.embed-responsive-item(id="lineChartDemo")
+
+	//- 	.col-md-6
+	//- 		.tile
+	//- 			h3.tile-title Support Requests
+	//- 			.embed-responsive.embed-responsive-16by9
+	//- 				canvas.embed-responsive-item(id="pieChartDemo")
+
+block specific-js
+	script(type='text/javascript', src="js/plugins/chart.js")
+	script(type='text/javascript').
+		var data = {
+			labels: ["January", "February", "March", "April", "May"],
+			datasets: [
+				{
+					label: "My First dataset",
+					fillColor: "rgba(220,220,220,0.2)",
+					strokeColor: "rgba(220,220,220,1)",
+					pointColor: "rgba(220,220,220,1)",
+					pointStrokeColor: "#fff",
+					pointHighlightFill: "#fff",
+					pointHighlightStroke: "rgba(220,220,220,1)",
+					data: [65, 59, 80, 81, 56]
+				},
+				{
+					label: "My Second dataset",
+					fillColor: "rgba(151,187,205,0.2)",
+					strokeColor: "rgba(151,187,205,1)",
+					pointColor: "rgba(151,187,205,1)",
+					pointStrokeColor: "#fff",
+					pointHighlightFill: "#fff",
+					pointHighlightStroke: "rgba(151,187,205,1)",
+					data: [28, 48, 40, 19, 86]
+				}
+			]
+		};
+		//- let s = getRandomColor();
+		var pdata = [
+			{
+				value: 300,
+				color: "#5AD3D1",
+				highlight: "#5AD3D1",
+				label: "Complete"
+			},
+			{
+				value: 300,
+				color: "#FF5A5E",
+				highlight: "#FF5A5E",
+				label: "In-Progress"
+			}
+		]
+
+		
+
+		var ctxl = $("#lineChartDemo").get(0).getContext("2d");
+		var lineChart = new Chart(ctxl).Line(data);
+
+		var ctxp = $("#pieChartDemo").get(0).getContext("2d");
+		var pieChart = new Chart(ctxp).Pie(pdata);
+
+		//- function getRandomColor()
+		//- 	{
+		//- 		var letters = '0123456789ABCDEF';
+		//-  		var color = '#';
+		//- 		for (var i = 0; i < 6; i++)
+		//- 			{
+		//- 				color += letters[Math.floor(Math.random() * 16)]+;
+		//- 			}
+		//- 		return color;
+		//- 	}
