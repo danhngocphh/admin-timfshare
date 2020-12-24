@@ -554,7 +554,7 @@ function HtmlEncode(s)
 // Use of Date.now() method 
 function getDateTime(dateIP){
     let today = new Date(dateIP.toLocaleString('en-US', {
-        timeZone: Asia/Bangkok
+        timeZone: 'Asia/Bangkok'
       }));
     let time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
     return time;
@@ -562,7 +562,7 @@ function getDateTime(dateIP){
 
   function getDateT(dateIP){
     let today = new Date(dateIP.toLocaleString('en-US', {
-        timeZone: Asia/Bangkok
+        timeZone: 'Asia/Bangkok'
       }));
     let date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
     return date;
