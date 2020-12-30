@@ -208,19 +208,24 @@ module.exports = {
                 });
 
         Links.aggregate([
-            { $group: { _id: '$link', title : { $first:  "$title" }, i_total: { $sum: 1 }}},
-            { $project: { _id: 1, i_total: 1 , title: 1 }}
+            { $match: { 
+                "link" : { "$exists" : true}, 
+                "title" : { "$exists" : true}
+              } 
+            },
+            { $group: { _id: { "link": "$link", "value":"$value"}  , title : { $first:  "$title" }, value : { $first:  "$value" }, i_total: { $sum: 1 }}},
+            { $project: { _id: 1, i_total: 1 , title: 1, value: 1 }}
             
           ]).
           then(function (result) {
+            let pos = 1;              
             for (let i in result) {
                
                     let val = result[i]; 
-
-                    let Stirnglink = HtmlEncode(val["_id"]);
+                   
                     
-                    
-                        values[val["_id"]] = [val["_id"], val["title"] , val["i_total"], Stirnglink];
+                        values[pos] = [val["_id"]["link"], val["title"] , val["i_total"], val["value"]];
+                        pos++;
                     
                     
                         
@@ -542,14 +547,6 @@ module.exports = {
     }
 };
 
-function HtmlEncode(s)
-{
-    var format = /^[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]*$/;
-    while(s.match(format)){
-        s.replace("/", "&amp;")
-    }
-    return s;
-}
 
 // Use of Date.now() method 
 function getDateTime(dateIP){

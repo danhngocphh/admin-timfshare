@@ -31,7 +31,7 @@ block content
 						table.table.table-hover.table-bordered#sampleTable
 							thead
 								tr
-									
+									th Key Search
 									th Title
 									th Link
 									
@@ -40,7 +40,7 @@ block content
 							tbody
 								each val, uuid in values
 									tr
-										
+										td #{val[3]}
 										td #{val[1]}
 										td: a(href='/table-data-linkbylink-detail/'+ encodeURIComponent(val[0])) #{val[0]}
 																			
