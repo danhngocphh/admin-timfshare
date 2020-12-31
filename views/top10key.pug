@@ -1,8 +1,8 @@
 extends layouts/_layout.pug
 
 block variables
-	- var activePage = 'form-components';
-	- var activeGroup = 'forms';
+	- var activePage = 'dashboard';
+	- var activeGroup = 'none';
 
 block title
 	title Data Table - Vali Admin
@@ -12,7 +12,7 @@ block content
 		div
 			h1
 				i.fa.fa-th-list
-				|  Data Link Table
+				|  Data Link Table By Keysearch "#{keysearch}"
 			p Table to display analytical data effectively
 
 		ul.app-breadcrumb.breadcrumb.side
@@ -31,19 +31,15 @@ block content
 						table.table.table-hover.table-bordered#sampleTable
 							thead
 								tr
-									th Key Search
-									th Title
-									th Link
 									
+									th Link
 									th Total
 									
 							tbody
 								each val, uuid in values
 									tr
-										td #{val[3]}
-										td #{val[1]}
-										td: a(href='/table-data-linkbylink-detail/'+ encodeURIComponent(val[0])) #{val[0]}
-																			
+										td: a(href='/linkbylink-detail/'+ encodeURIComponent(val[0])) #{val[0]}
+																		
 										td #{val[2]}										
 								//- tr
 								//- 	td Ashton Cox

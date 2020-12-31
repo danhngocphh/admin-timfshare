@@ -9,35 +9,35 @@ router.get('/', function(req, res) {
   mongodb.getDash(res);
 });
 
-router.get('/data-key-table', function(req, res) {
+router.get('/key', function(req, res) {
   mongodb.getValkey(res);
 });
 
-router.get('/data-link-table', function(req, res) {
+router.get('/link', function(req, res) {
   mongodb.getVallink(res);
 });
 
-router.get('/data-linkbykey-table', function(req, res) {
+router.get('/linkbykey', function(req, res) {
   mongodb.getVallinkbykey(res);
 });
 
-router.get('/table-data-key-detail/:keysearch', function(req, res) {
+router.get('/key-detail/:keysearch', function(req, res) {
   var key = req.params.keysearch;
   mongodb.getkeyDetail(key,res);
 });
 
-router.get('/table-data-top10key/:key', function(req, res) {
+router.get('/top10key/:key', function(req, res) {
   var key = req.params.key;
   mongodb.getlinkbytop10key(key,res);
 });
 
 
-router.get('/table-data-linkbykey-detail/:link', function(req, res) {
+router.get('/linkbykey-detail/:link', function(req, res) {
   var key = req.params.link;
   mongodb.getlinkbykeyDetail(key,res);
 });
 
-router.get('/table-data-linkbylink-detail/:link', function(req, res) {
+router.get('/linkbylink-detail/:link', function(req, res) {
   var key = req.params.link;
   mongodb.getlinkbylinkDetail(key,res);
 });

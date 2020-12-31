@@ -10,7 +10,7 @@ block content
 			h1
 				i.fa.fa-dashboard
 				|  Dashboard
-			p A free and open source Bootstrap 4 admin template
+			p Keysearch statistics dashboard and clicked links
 
 		ul.app-breadcrumb.breadcrumb
 			li.breadcrumb-item
@@ -70,7 +70,7 @@ block content
 							- i ++;
 							tr
 								td #{i}
-								td: a(href='/table-data-top10key/'+ val[0]) #{val[0]}										
+								td: a(href='/top10key/'+ val[0]) #{val[0]}										
 								td #{val[1]}
 						//- tr
 						//- 	td 1
@@ -103,7 +103,7 @@ block content
 							- i ++;
 							tr
 								td #{i}
-								td: a(href='table-data-linkbylink-detail/'+ encodeURIComponent(link[0])) #{link[0]}										
+								td: a(href='linkbylink-detail/'+ encodeURIComponent(link[0])) #{link[0]}										
 								td #{link[1]}
 							
 						//- tr

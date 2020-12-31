@@ -1,7 +1,7 @@
 extends layouts/_layout.pug
 
 block variables
-	- var activePage = 'form-custom';
+	- var activePage = 'form-components';
 	- var activeGroup = 'forms';
 
 block title
@@ -31,16 +31,20 @@ block content
 						table.table.table-hover.table-bordered#sampleTable
 							thead
 								tr
-									
+									th Key Search
+									th Title
 									th Link
-									th Total Number Of Links
+									
+									th Total
 									
 							tbody
 								each val, uuid in values
 									tr
-										
-										td: a(href='table-data-linkbykey-detail/'+ val[0]) #{val[0]}										
-										td #{val[1]}										
+										td #{val[3]}
+										td #{val[1]}
+										td: a(href='/linkbylink-detail/'+ encodeURIComponent(val[0])) #{val[0]}
+																			
+										td #{val[2]}										
 								//- tr
 								//- 	td Ashton Cox
 								//- 	td Junior Technical Author

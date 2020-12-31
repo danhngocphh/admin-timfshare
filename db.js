@@ -168,7 +168,7 @@ module.exports = {
             }
 
             title = process.env.TITLE || 'Fshare demo'
-            res.render('table-data-key', {title, values: values , total: total}); // [ { maxBalance: 98000 } ]
+            res.render('key', {title, values: values , total: total}); // [ { maxBalance: 98000 } ]
             
           });
 
@@ -233,7 +233,7 @@ module.exports = {
             }
 
             title = process.env.TITLE || 'Fshare demo'
-            res.render('table-data-link', {title, values: values , total: total}); // [ { maxBalance: 98000 } ]
+            res.render('link', {title, values: values , total: total}); // [ { maxBalance: 98000 } ]
             
           });
 
@@ -292,7 +292,7 @@ module.exports = {
             }
 
             title = process.env.TITLE || 'Fshare demo'
-            res.render('table-data-top10key', {keysearch, values: values , total: total}); // [ { maxBalance: 98000 } ]
+            res.render('top10key', {keysearch, values: values , total: total}); // [ { maxBalance: 98000 } ]
             
           });
 
@@ -351,7 +351,7 @@ module.exports = {
             }
 
             title = process.env.TITLE || 'Fshare demo'
-            res.render('table-data-linkbykey', {title, values: values , total: total}); // [ { maxBalance: 98000 } ]
+            res.render('linkbykey', {title, values: values , total: total}); // [ { maxBalance: 98000 } ]
             
           });
 
@@ -414,7 +414,7 @@ module.exports = {
                 
             }
             var title = process.env.TITLE || 'Fshare demo'
-            res.render('table-data-key-detail', {title,key: key,values: values , total: total});
+            res.render('key-detail', {title,key: key,values: values , total: total});
         });
     },
 
@@ -453,7 +453,7 @@ module.exports = {
                 
             }
             let keysearch = key;
-            res.render('table-data-linkbykey-detail', {keysearch,key: key,values: values , total: total});
+            res.render('linkbykey-detail', {keysearch,key: key,values: values , total: total});
         });
     },
 
@@ -492,7 +492,7 @@ module.exports = {
                 
             }
             let link = key;
-            res.render('table-data-linkbylink-detail', {link,key: key,values: values , total: total});
+            res.render('linkbylink-detail', {link,key: key,values: values , total: total});
         });
     },
 

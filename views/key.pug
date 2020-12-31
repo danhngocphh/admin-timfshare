@@ -1,8 +1,8 @@
 extends layouts/_layout.pug
 
 block variables
-	- var activePage = 'form-custom';
-	- var activeGroup = 'forms';
+	- var activePage = 'ui-bootstrap';
+	- var activeGroup = 'ui-elements';
 
 block title
 	title Data Table - Vali Admin
@@ -12,14 +12,14 @@ block content
 		div
 			h1
 				i.fa.fa-th-list
-				|  Data Link Table By Keysearch "#{keysearch}"
+				|  Data Keysearch Table
 			p Table to display analytical data effectively
 
 		ul.app-breadcrumb.breadcrumb.side
 			li.breadcrumb-item
 				i.fa.fa-home.fa-lg
 			li.breadcrumb-item
-				| link
+				| Keyword Search
 			li.breadcrumb-item.active
 				a(href="#") Data Table
 
@@ -31,19 +31,15 @@ block content
 						table.table.table-hover.table-bordered#sampleTable
 							thead
 								tr
-									th Title
-									th Link
-									th Time
-									th Date
+									th Key Search
+									th Total
 									
 							tbody
 								each val, uuid in values
 									tr
+										td: a(href='key-detail/'+ val[0]) #{val[0]}										
+										td #{val[3]}	
 																				
-										td #{val[0]}
-										td: a(href='/table-data-linkbylink-detail/'+ encodeURIComponent(val[1])) #{val[1]}
-										td #{val[2]}
-										td #{val[3]}										
 								//- tr
 								//- 	td Ashton Cox
 								//- 	td Junior Technical Author

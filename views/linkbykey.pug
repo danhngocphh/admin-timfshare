@@ -1,8 +1,8 @@
 extends layouts/_layout.pug
 
 block variables
-	- var activePage = 'ui-bootstrap';
-	- var activeGroup = 'ui-elements';
+	- var activePage = 'form-custom';
+	- var activeGroup = 'forms';
 
 block title
 	title Data Table - Vali Admin
@@ -12,14 +12,14 @@ block content
 		div
 			h1
 				i.fa.fa-th-list
-				|  Data Keysearch Table
+				|  Data Link Table
 			p Table to display analytical data effectively
 
 		ul.app-breadcrumb.breadcrumb.side
 			li.breadcrumb-item
 				i.fa.fa-home.fa-lg
 			li.breadcrumb-item
-				| Keyword Search
+				| Link
 			li.breadcrumb-item.active
 				a(href="#") Data Table
 
@@ -31,15 +31,16 @@ block content
 						table.table.table-hover.table-bordered#sampleTable
 							thead
 								tr
-									th Key Search
-									th Total
+									
+									th Link
+									th Total Number Of Links
 									
 							tbody
 								each val, uuid in values
 									tr
-										td: a(href='table-data-key-detail/'+ val[0]) #{val[0]}										
-										td #{val[3]}	
-																				
+										
+										td: a(href='linkbykey-detail/'+ val[0]) #{val[0]}										
+										td #{val[1]}										
 								//- tr
 								//- 	td Ashton Cox
 								//- 	td Junior Technical Author
@@ -430,5 +431,10 @@ block specific-js
 	// Data table plugin
 	script(type='text/javascript', src="/js/plugins/jquery.dataTables.min.js")
 	script(type='text/javascript', src="/js/plugins/dataTables.bootstrap.min.js")
+	script(type='text/javascript', src="/js/plugins/HtmlEncode.js")
+
 	script(type='text/javascript').
 		$('#sampleTable').DataTable();
+  				
+		
+	

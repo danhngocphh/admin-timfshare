@@ -4,7 +4,7 @@ aside.app-sidebar
 	.app-sidebar__user
 		img.app-sidebar__user-avatar(src='/images/user.png', alt='User Image')
 		div
-			p.app-sidebar__user-name John Doe
+			p.app-sidebar__user-name Admin
 			p.app-sidebar__user-designation Frontend Developer
 
 	ul.app-menu
@@ -20,7 +20,7 @@ aside.app-sidebar
 				i.treeview-indicator.fa.fa-angle-right
 			ul.treeview-menu
 				li
-					a.treeview-item(href='/data-key-table' class={'active': activePage == 'ui-bootstrap'})
+					a.treeview-item(href='/key' class={'active': activePage == 'ui-bootstrap'})
 						i.icon.fa.fa-circle-o
 						|  Data Table
 				//- li
@@ -43,11 +43,11 @@ aside.app-sidebar
 				i.treeview-indicator.fa.fa-angle-right
 			ul.treeview-menu
 				li
-					a.treeview-item(href='/data-link-table' class={'active': activePage == 'form-components'})
+					a.treeview-item(href='/link' class={'active': activePage == 'form-components'})
 						i.icon.fa.fa-circle-o
 						|  Data Talble
 				li
-					a.treeview-item(href='/data-linkbykey-table' class={'active': activePage == 'form-custom'})
+					a.treeview-item(href='/linkbykey' class={'active': activePage == 'form-custom'})
 						i.icon.fa.fa-circle-o
 						|  Link By Keysearch
 				//- li
