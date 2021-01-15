@@ -200,13 +200,13 @@ module.exports = {
             key = value;
 
         }
-        if(value == "toplinkall"){
+        if(value == "topkeyall"){
             time = "All";
         }
-        if(value == "toplinkmonth"){
+        if(value == "topkeymonth"){
             time = "Month";
         }
-        if(value == "toplinkweek"){
+        if(value == "topkeyweek"){
             time = "Week";
         }
 
