@@ -1,4 +1,4 @@
-var express = require('express');
+ var express = require('express');
 var mongodb = require('../db');
 
 var router = express.Router();
@@ -13,6 +13,17 @@ router.get('/key', function(req, res) {
   mongodb.getValkey(res);
 });
 
+
+router.get('/topkey/:value', function(req, res) {
+  var value = req.params.value;
+  mongodb.getTopKey(value, res);
+});
+
+router.get('/toplink/:value', function(req, res) {
+  var value = req.params.value;
+  mongodb.getTopLink(value, res);
+});
+
 router.get('/link', function(req, res) {
   mongodb.getVallink(res);
 });
@@ -20,6 +31,7 @@ router.get('/link', function(req, res) {
 router.get('/linkbykey', function(req, res) {
   mongodb.getVallinkbykey(res);
 });
+
 
 router.get('/key-detail/:keysearch', function(req, res) {
   var key = req.params.keysearch;
@@ -68,6 +80,22 @@ router.post('/links', function(req, res) {
     return
   }
   mongodb.sendLink(val, link, title, date, res);
+});
+
+
+router.post('/toplinks', function(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  var name = req.body.name;
+  var date = req.body.date;
+  var value = req.body.value;
+
+
+
+  if (value === undefined || value === "") {
+    res.send(JSON.stringify({status: "error", value: "Value undefined"}));
+    return
+  }
+  mongodb.sendtopLink(name, date, value, res);
 });
 
 router.delete('/values/:id', function(req, res) {

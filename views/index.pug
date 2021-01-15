@@ -65,11 +65,11 @@ block content
 							th Total
 							
 					tbody
-						- var i = 0;
+						
 						each val, uuid in values
-							- i ++;
+							
 							tr
-								td #{i}
+								td #{val[2]}
 								td: a(href='/top10key/'+ val[0]) #{val[0]}										
 								td #{val[1]}
 						//- tr
@@ -98,12 +98,12 @@ block content
 							th Total
 							
 					tbody
-						- var i = 0;
+						
 						each link, uuid in links
-							- i ++;
+							
 							tr
-								td #{i}
-								td: a(href='linkbylink-detail/'+ encodeURIComponent(link[0])) #{link[0]}										
+								td #{link[3]}
+								td: a(href='linkbylink-detail/'+ encodeURIComponent(link[0])) #{link[2]}										
 								td #{link[1]}
 							
 						//- tr

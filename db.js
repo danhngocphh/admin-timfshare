@@ -18,6 +18,13 @@ var schemaLink = mongoose.Schema({
 });
 var Links = mongoose.model('links', schemaLink);
 
+var schematopLink = mongoose.Schema({
+    name: String,
+    date: Date,
+    value: Object
+});
+var topLinks = mongoose.model('top', schematopLink);
+
 
 
 module.exports = {
@@ -49,38 +56,78 @@ module.exports = {
                     totallink = countlink;
                 });        
 
-        Values.aggregate([
-            { $group: { _id: '$value', i_total: { $sum: 1 }}},
-            { $project: { _id: 1, i_total: 1 }},
-            { $sort: { i_total: -1 } },
-            { $limit : 10 }
-          ]).
+        // Values.aggregate([
+        //     { $group: { _id: '$value', i_total: { $sum: 1 }}},
+        //     { $project: { _id: 1, i_total: 1 }},
+        //     { $sort: { i_total: -1 } },
+        //     { $limit : 10 }
+        //   ]).
+        //   then(function (result) {
+            
+        //     for (let i in result) {
+               
+        //             let val = result[i];    
+                    
+        //                 values[val["_id"]] = [val["_id"], val["i_total"]];
+               
+        //     }
+        //     title = process.env.TITLE || 'Fshare demo'
+        //     // [ { maxBalance: 98000 } ]
+        //     Links.aggregate([
+        //         { $group: { _id: '$link',title : { $first:  "$title" }, i_total: { $sum: 1 }}},
+        //         { $project: { _id: 1,title: 1, i_total: 1 }},
+        //         { $sort: { i_total: -1 } },
+        //         { $limit : 10 }
+        //       ]).
+        //       then(function (result) {
+                
+        //         for (let i in result) {
+                   
+        //                 let val = result[i];    
+                        
+        //                     links[val["_id"]] = [val["_id"], val["i_total"], val["title"]];
+                   
+        //         }
+        //         title = process.env.TITLE || 'Fshare demo'
+        //         // [ { maxBalance: 98000 } ]
+        //         res.render('index', {title, links: links, values: values , totalkey: totalkey, totallink: totallink });
+                
+        //       });
+            
+        //   });
+        var findnamekey = "topkeyweek";
+        var findnamelink = "toplinkweek";
+
+        topLinks.findOne({name: findnamekey}, {}).
           then(function (result) {
             
-            for (let i in result) {
+            console.log(result.value[0].keyword);
+            console.log(result.value);
+
+            for (let i in result.value) {
                
-                    let val = result[i];    
-                    
-                        values[val["_id"]] = [val["_id"], val["i_total"]];
-               
-            }
+                            let val = result.value[i];    
+                            
+                            values[i] = [val.keyword, val.search_total, val.position];
+                       
+                    }
+
+
             title = process.env.TITLE || 'Fshare demo'
             // [ { maxBalance: 98000 } ]
-            Links.aggregate([
-                { $group: { _id: '$link', i_total: { $sum: 1 }}},
-                { $project: { _id: 1, i_total: 1 }},
-                { $sort: { i_total: -1 } },
-                { $limit : 10 }
-              ]).
-              then(function (result) {
-                
-                for (let i in result) {
-                   
-                        let val = result[i];    
-                        
-                            links[val["_id"]] = [val["_id"], val["i_total"]];
-                   
-                }
+            topLinks.findOne({name: findnamelink}, {}).
+                then(function (result) {
+            
+            console.log(result.value[0].keyword);
+            console.log(result.value);
+
+            for (let i in result.value) {
+               
+                            let link = result.value[i];    
+                            
+                            links[i] = [link.link, link.search_total, link.title, link.position];
+                       
+                    }
                 title = process.env.TITLE || 'Fshare demo'
                 // [ { maxBalance: 98000 } ]
                 res.render('index', {title, links: links, values: values , totalkey: totalkey, totallink: totallink });
@@ -116,6 +163,139 @@ module.exports = {
         //     res.render('index', {title, link: values , totalkey: totalkey, totallink: totallink }); // [ { maxBalance: 98000 } ]
             
         //   });
+
+        // Values.aggregate().
+        //     group({ _id: '$value', i_total: { $sum: 1 } }).
+        //     exec(function (err, res) {
+        //         if (err) return err;
+        //         let a = res;
+        //         console.log(res); 
+        //     });
+
+        // Values.find( async function(err, result) {
+            
+        //     if (err) {
+        //         console.log(err);
+        //         res.send('database error');
+        //         return
+        //     }
+          
+        //     await Values.count({}, function( err, count){
+        //         total = count;
+        //     });
+            
+            
+        // });
+       
+    },
+
+    getTopKey :  function(value, res) {
+        let total = 0;
+        let check;
+        let title = '';
+        let values = {};
+        var time;
+        var key = "topkeyall";
+        if(value != null){
+            key = value;
+
+        }
+        if(value == "toplinkall"){
+            time = "All";
+        }
+        if(value == "toplinkmonth"){
+            time = "Month";
+        }
+        if(value == "toplinkweek"){
+            time = "Week";
+        }
+
+        topLinks.findOne({name: key}, {}).
+                then(function (result) {
+            
+            console.log(result.value[0].keyword);
+            console.log(result.value);
+
+            for (let i in result.value) {
+               
+                            let val = result.value[i];    
+                            
+                            values[i] = [val.keyword, val.search_total, val.position];
+                       
+                    }
+                title = process.env.TITLE || 'Fshare demo'
+                // [ { maxBalance: 98000 } ]
+                res.render('topkey', {title, values: values , total: total, time });
+                
+              });
+
+        // Values.aggregate().
+        //     group({ _id: '$value', i_total: { $sum: 1 } }).
+        //     exec(function (err, res) {
+        //         if (err) return err;
+        //         let a = res;
+        //         console.log(res); 
+        //     });
+
+        // Values.find( async function(err, result) {
+            
+        //     if (err) {
+        //         console.log(err);
+        //         res.send('database error');
+        //         return
+        //     }
+          
+        //     await Values.count({}, function( err, count){
+        //         total = count;
+        //     });
+            
+            
+        // });
+       
+    },
+
+
+    getTopLink :  function(value, res) {
+        let total = 0;
+        let check;
+        let title = '';
+        let links = {};
+        var time;
+        var key = "toplinkall";
+        if(value != null){
+            key = value;
+
+        }
+
+        if(value == "toplinkall"){
+            time = "All";
+        }
+        if(value == "toplinkmonth"){
+            time = "Month";
+        }
+        if(value == "toplinkweek"){
+            time = "Week";
+        }
+        
+
+        topLinks.findOne({name: key}, {}).
+                then(function (result) {
+            
+            console.log(result.value[0].keyword);
+            console.log(result.value);
+
+            for (let i in result.value) {
+               
+                        let link = result.value[i];    
+                            
+                        links[i] = [link.link, link.search_total, link.title, link.position];
+                       
+                    }
+                title = process.env.TITLE || 'Fshare demo'
+                // [ { maxBalance: 98000 } ]
+                res.render('toplink', {title, links: links , total: total, time });
+                
+              });
 
         // Values.aggregate().
         //     group({ _id: '$value', i_total: { $sum: 1 } }).
@@ -535,6 +715,27 @@ module.exports = {
             res.status(201).send(JSON.stringify({status: "ok", value: result["value"], id: result["_id"]}));
         });
     },
+
+    sendtopLink : function(name, date, value, res) {
+        // var count;
+        // find value
+        // Values.findOne({value: val}, function(err,obj) { count = obj.count; });
+        
+        
+        
+        var request = new topLinks({name: name, date: date, value: value});
+        request.save((err, result) => {
+            if (err) {
+                console.log(err);
+                res.send(JSON.stringify({status: "error", value: "Error, db request failed"}));
+                return
+            }
+            this.updateGauge();
+            statsd.increment('creations');
+            res.status(201).send(JSON.stringify({status: "ok", value: result["value"], id: result["_id"]}));
+        });
+    },
+
 
     delVal : function(id) {
         Values.remove({_id: id}, (err) => {

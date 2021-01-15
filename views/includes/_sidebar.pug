@@ -12,6 +12,78 @@ aside.app-sidebar
 			a.app-menu__item(href='/' class={'active': activePage == 'dashboard'})
 				i.app-menu__icon.fa.fa-dashboard
 				span.app-menu__label Dashboard
+		
+		li.treeview(class={'is-expanded': activeGroup == 'pages'})
+			a.app-menu__item(href='#' data-toggle='treeview')
+				i.app-menu__icon.fa.fa-file-text
+				span.app-menu__label Top
+				i.treeview-indicator.fa.fa-angle-right
+			ul.treeview-menu
+				li
+					a.treeview-item(href='/topkey/topkeyall' class={'active': activePage == 'blank-page'})
+						i.icon.fa.fa-circle-o
+						|  Top 10 Key All
+				li
+					a.treeview-item(href='/topkey/topkeymoth')
+						i.icon.fa.fa-circle-o
+						|  Top 10 Key Month
+				li
+					a.treeview-item(href='/topkey/topkeyweek')
+						i.icon.fa.fa-circle-o
+						|  Top 10 Key Week
+				li
+					a.treeview-item(href='/toplink/topkeyall' class={'active': activePage == 'user-page'})
+						i.icon.fa.fa-circle-o
+						|  Top 10 Link All
+				li
+					a.treeview-item(href='/toplink/toplinkmonth' class={'active': activePage == 'invoice-page'})
+						i.icon.fa.fa-circle-o
+						|  Top 10 Link Month
+				li
+					a.treeview-item(href='/toplink/toplinkweek' class={'active': activePage == 'calendar-page'})
+						i.icon.fa.fa-circle-o
+						|  Top 10 Link Week
+				//- li
+				//- 	a.treeview-item(href='page-mailbox.html' class={'active': activePage == 'mailbox-page'})
+				//- 		i.icon.fa.fa-circle-o
+				//- 		|  Mailbox
+				//- li
+				//- 	a.treeview-item(href='page-error.html' class={'active': activePage == 'error-page'})
+				//- 		i.icon.fa.fa-circle-o
+				//- 		|  Error Page
+			//- ul.treeview-menu
+			//- 	li
+			//- 		a.treeview-item(href='blank-page.html' class={'active': activePage == 'blank-page'})
+			//- 			i.icon.fa.fa-circle-o
+			//- 			|  Blank Page
+			//- 	li
+			//- 		a.treeview-item(href='page-login.html')
+			//- 			i.icon.fa.fa-circle-o
+			//- 			|  Login Page
+			//- 	li
+			//- 		a.treeview-item(href='page-lockscreen.html')
+			//- 			i.icon.fa.fa-circle-o
+			//- 			|  Lockscreen Page
+			//- 	li
+			//- 		a.treeview-item(href='page-user.html' class={'active': activePage == 'user-page'})
+			//- 			i.icon.fa.fa-circle-o
+			//- 			|  User Page
+			//- 	li
+			//- 		a.treeview-item(href='page-invoice.html' class={'active': activePage == 'invoice-page'})
+			//- 			i.icon.fa.fa-circle-o
+			//- 			|  Invoice Page
+			//- 	li
+			//- 		a.treeview-item(href='page-calendar.html' class={'active': activePage == 'calendar-page'})
+			//- 			i.icon.fa.fa-circle-o
+			//- 			|  Calendar Page
+			//- 	li
+			//- 		a.treeview-item(href='page-mailbox.html' class={'active': activePage == 'mailbox-page'})
+			//- 			i.icon.fa.fa-circle-o
+			//- 			|  Mailbox
+			//- 	li
+			//- 		a.treeview-item(href='page-error.html' class={'active': activePage == 'error-page'})
+			//- 			i.icon.fa.fa-circle-o
+			//- 			|  Error Page
 
 		li.treeview(class={'is-expanded': activeGroup == 'ui-elements'})
 			a.app-menu__item(href='#', data-toggle='treeview')
@@ -81,44 +153,7 @@ aside.app-sidebar
 		//- 				i.icon.fa.fa-circle-o
 		//- 				|  Data Tables
 
-		//- li.treeview(class={'is-expanded': activeGroup == 'pages'})
-		//- 	a.app-menu__item(href='#' data-toggle='treeview')
-		//- 		i.app-menu__icon.fa.fa-file-text
-		//- 		span.app-menu__label Pages
-		//- 		i.treeview-indicator.fa.fa-angle-right
-		//- 	ul.treeview-menu
-		//- 		li
-		//- 			a.treeview-item(href='blank-page.html' class={'active': activePage == 'blank-page'})
-		//- 				i.icon.fa.fa-circle-o
-		//- 				|  Blank Page
-		//- 		li
-		//- 			a.treeview-item(href='page-login.html')
-		//- 				i.icon.fa.fa-circle-o
-		//- 				|  Login Page
-		//- 		li
-		//- 			a.treeview-item(href='page-lockscreen.html')
-		//- 				i.icon.fa.fa-circle-o
-		//- 				|  Lockscreen Page
-		//- 		li
-		//- 			a.treeview-item(href='page-user.html' class={'active': activePage == 'user-page'})
-		//- 				i.icon.fa.fa-circle-o
-		//- 				|  User Page
-		//- 		li
-		//- 			a.treeview-item(href='page-invoice.html' class={'active': activePage == 'invoice-page'})
-		//- 				i.icon.fa.fa-circle-o
-		//- 				|  Invoice Page
-		//- 		li
-		//- 			a.treeview-item(href='page-calendar.html' class={'active': activePage == 'calendar-page'})
-		//- 				i.icon.fa.fa-circle-o
-		//- 				|  Calendar Page
-		//- 		li
-		//- 			a.treeview-item(href='page-mailbox.html' class={'active': activePage == 'mailbox-page'})
-		//- 				i.icon.fa.fa-circle-o
-		//- 				|  Mailbox
-		//- 		li
-		//- 			a.treeview-item(href='page-error.html' class={'active': activePage == 'error-page'})
-		//- 				i.icon.fa.fa-circle-o
-		//- 				|  Error Page
+
 
 		//- li
 		//- 	a.app-menu__item(href='docs.html' class={'active': activePage == 'docs'})
