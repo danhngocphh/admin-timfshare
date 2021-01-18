@@ -95,8 +95,8 @@ module.exports = {
         //       });
             
         //   });
-        var findnamekey = "topkeyweek";
-        var findnamelink = "toplinkweek";
+        var findnamekey = "topkeyall";
+        var findnamelink = "toplinkall";
 
         topLinks.findOne({name: findnamekey}, {}).
           then(function (result) {
@@ -130,6 +130,7 @@ module.exports = {
                     }
                 title = process.env.TITLE || 'Fshare demo'
                 // [ { maxBalance: 98000 } ]
+                
                 res.render('index', {title, links: links, values: values , totalkey: totalkey, totallink: totallink });
                 
               });
@@ -193,7 +194,7 @@ module.exports = {
         let total = 0;
         let check;
         let title = '';
-        let values = {};
+        let values = [];
         var time;
         var key = "topkeyall";
         if(value != null){
@@ -220,12 +221,13 @@ module.exports = {
                
                             let val = result.value[i];    
                             
-                            values[i] = [val.keyword, val.search_total, val.position];
+                            values[i] = [val.keyword, val.search_total, val.position, i];
                        
                     }
+                    selectionSortkey(values);
                 title = process.env.TITLE || 'Fshare demo'
                 // [ { maxBalance: 98000 } ]
-                res.render('topkey', {title, values: values , total: total, time });
+                res.render('topkey', {title, values: values , total: total, time, valuetimename: value });
                 
               });
 
@@ -259,7 +261,7 @@ module.exports = {
         let total = 0;
         let check;
         let title = '';
-        let links = {};
+        let links = [];
         var time;
         var key = "toplinkall";
         if(value != null){
@@ -288,12 +290,14 @@ module.exports = {
                
                         let link = result.value[i];    
                             
-                        links[i] = [link.link, link.search_total, link.title, link.position];
+                        links[i] = [link.link, link.search_total, link.title, link.position, i];
                        
                     }
                 title = process.env.TITLE || 'Fshare demo'
                 // [ { maxBalance: 98000 } ]
-                res.render('toplink', {title, links: links , total: total, time });
+                selectionSort(links);
+               
+                res.render('toplink', {title, links: links , total: total, time, valuetimename: value});
                 
               });
 
@@ -736,6 +740,227 @@ module.exports = {
         });
     },
 
+    updatetoplink : async function(timename, index, top, title, link, total, res) {
+        // var count;
+        // find value
+        // Values.findOne({value: val}, function(err,obj) { count = obj.count; });
+        index = parseInt(index);
+        var topLinkStorageTmp = {};
+        if(index < 0){
+
+            var curr = new Date;
+
+
+            switch (timename) {
+                case null:
+                  var dategtelink = new Date("2020-12-06T07:30:19.063Z");
+                  var dateltlink = new Date();
+                  nametoplink = "toplinkall";
+                  break;
+                case 'toplinkall':
+                    var dategtelink = new Date("2020-12-06T07:30:19.063Z");
+                    //var dateltlink = new  Date("2021-01-14T07:30:19.063Z");
+                    var dateltlink = new Date() ;
+                  nametoplink = "toplinkall";
+                  break;
+                case "toplinkmonth":
+                  var dategtelink = new Date(curr.getFullYear(), curr.getMonth(), 1);
+                  var dateltlink = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+                  nametoplink = "toplinkmonth";
+                  break;
+                case "toplinkweek":
+                  var dategtelink = new Date(curr.setDate(curr.getDate() - curr.getDay()));
+                  var dateltlink = new Date(curr.setDate(curr.getDate() - curr.getDay()+6));
+                  nametoplink = "toplinkweek";
+                    break;
+                case "toplinkyear":
+                  var dategtelink = new Date(new Date().getFullYear(), 0, 1);
+                  var dateltlink = new Date(new Date().getFullYear(), 11, 31)
+                  nametoplink = "toplinkyear";
+                    break;
+                default:
+                  var dategtelink = new Date("2020-12-06T07:30:19.063Z");
+                  var dateltlink = new Date() ;
+                  nametoplink = "toplinkall";
+              }
+
+            await Links.aggregate([
+            { $match : {date:  {$gte: dategtelink, $lt: dateltlink}}},
+            { $group: { _id: '$link', i_total: { $sum: 1 }, title : { $first:  "$title" }}},
+            { $project: { _id: 1, i_total: 1, title: 1 }},
+            { $sort: { i_total: -1 } },
+            { $limit : 10 }
+          ]).
+          then(function (result) {
+            
+            for (let i in result) {
+               
+                    let val = result[i];    
+                    
+                    let posTmp = parseInt(i) + 1;
+                     topLinkStorageTmp[parseInt(i)] = {'position' : posTmp, 'link': val["_id"], 'title': val["title"] , 'search_total' : val["i_total"]}
+               
+            }
+
+            
+            
+          });
+
+
+        }else{
+
+            await topLinks.findOne({name: timename}, {}).
+            then(function (result) {
+    
+            // console.log(result.value[0].keyword);
+            // console.log(result.value);
+
+            for (let i in result.value) {
+                            if(i == index)
+                            {
+                                topLinkStorageTmp[parseInt(i)] = {'position' : parseInt(top), 'link': link, 'title': title , 'search_total' : parseInt(total)}
+
+                            }else{
+
+                                let link = result.value[i];    
+                            
+                                console.log(link.position);
+                                topLinkStorageTmp[parseInt(i)] = {'position' : link.position, 'link': link.link, 'title': link.title , 'search_total' : link.search_total}
+
+                            }
+        }
+                // title = process.env.TITLE || 'Fshare demo'
+                // [ { maxBalance: 98000 } ]
+                // res.render('topkey', {title, values: values , total: total, time });
+        
+      });
+
+        }
+        
+       
+        await topLinks.update( { name: timename },{ $set: {value: topLinkStorageTmp } }, (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send(JSON.stringify({status: "error", value: "Error, db request failed"}));
+                return
+            }
+            this.updateGauge();
+            statsd.increment('creations');
+            res.redirect('/toplink/'+ timename);
+            // res.status(201).send(JSON.stringify({status: "ok", value: result["value"], id: result["_id"]}));
+        });
+
+
+    },
+
+    updatetopkey : async function(timename, index, top, key, total, res) {
+        // var count;
+        // find value
+        // Values.findOne({value: val}, function(err,obj) { count = obj.count; });
+        index = parseInt(index);
+        var topKeyStorageTmp = {};
+        if(index < 0){
+
+            var curr = new Date;
+
+            switch (timename) {
+                case null:
+                  var dategte = new Date("2020-12-06T07:30:19.063Z");
+                  var datelt = new Date();
+                  namekeylink = "topkeyall";
+                  
+                  break;
+                case 'topkeyall':
+                  var dategte = new Date("2020-12-06T07:30:19.063Z");
+                  var datelt = new Date();
+                  namekeylink = "topkeyall";
+                  break;
+                case "topkeyweek":
+                  var dategte = new Date(curr.setDate(curr.getDate() - curr.getDay()));
+                  var datelt = new Date(curr.setDate(curr.getDate() - curr.getDay()+6));
+                  namekeylink = "topkeyweek";
+                  break;
+                case "topkeymonth":
+                    var dategte = new Date(curr.getFullYear(), curr.getMonth(), 1);
+                    var datelt = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+                    namekeylink = "topkeymonth";
+                    break;
+                case "topkeyyear":
+                  var dategte = new Date(new Date().getFullYear(), 0, 1);
+                  var datelt = new  Date(new Date().getFullYear(), 11, 31)
+                  namekeylink = "topkeyyear";
+                    break;
+                default:
+                  var dategte = new Date("2020-12-06T07:30:19.063Z");
+                  var datelt = new Date();
+                  namekeylink = "topkeyall";
+              }
+
+              await Values.aggregate([
+                { $match : {date:  {$gte: dategte, $lt: datelt}}},
+                { $group: { _id: '$value',  i_total: { $sum: 1 }}},
+                { $project: { _id: 1, i_total: 1, date: 1}},
+                { $sort: { i_total: -1 } },
+                { $limit : 10 }
+              ]).
+          then(function (result) {
+            
+            for (let i in result) {
+               
+                    let val = result[i];    
+                    
+                    let posTmp = parseInt(i) + 1;
+                    topKeyStorageTmp[parseInt(i)] = {'position' : posTmp, 'keyword': val["_id"], 'search_total' : val["i_total"]}
+               
+            }
+
+            
+            
+          });
+
+
+        }else{
+
+            await topLinks.findOne({name: timename}, {}).
+            then(function (result) {
+    
+            // console.log(result.value[0].keyword);
+            // console.log(result.value);
+
+            for (let i in result.value) {
+                            if(i == index)
+                            {
+                                topKeyStorageTmp[parseInt(i)] = {'position' : parseInt(top), 'keyword': key, 'search_total' : parseInt(total)}
+
+                            }else{
+
+                                let val = result.value[i];                                  
+                                topKeyStorageTmp[parseInt(i)] = {'position' : val.position, 'keyword': val.keyword, 'search_total' : val.search_total}
+
+                            }
+        }
+                // title = process.env.TITLE || 'Fshare demo'
+                // [ { maxBalance: 98000 } ]
+                // res.render('topkey', {title, values: values , total: total, time });
+        
+      });
+
+        }
+        
+       
+        await topLinks.update( { name: timename },{ $set: {value: topKeyStorageTmp } }, (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send(JSON.stringify({status: "error", value: "Error, db request failed"}));
+                return
+            }
+            this.updateGauge();
+            statsd.increment('creations');
+            res.redirect('/topkey/'+ timename);
+            // res.status(201).send(JSON.stringify({status: "ok", value: result["value"], id: result["_id"]}));
+        });
+    },
+
 
     delVal : function(id) {
         Values.remove({_id: id}, (err) => {
@@ -761,4 +986,33 @@ function getDateTime(dateIP){
     let date = today.getDate()+'-'+(today.getMonth()+1)+'-'+today.getFullYear();
     return date;
   }  
+
+
+  function selectionSort(array){
+    for(let i = 0; i < array.length - 1; i++){
+      let idmin = i;
+      for(let j = i + 1; j < array.length; j++){
+        if(array[j][3] < array[idmin][3]) idmin = j;
+      }
+   
+      // swap
+      let t = array[i];
+      array[i] = array[idmin];
+      array[idmin] = t; 
+    }
+   }
+
+   function selectionSortkey(array){
+    for(let i = 0; i < array.length - 1; i++){
+      let idmin = i;
+      for(let j = i + 1; j < array.length; j++){
+        if(array[j][2] < array[idmin][2]) idmin = j;
+      }
+   
+      // swap
+      let t = array[i];
+      array[i] = array[idmin];
+      array[idmin] = t; 
+    }
+   }
   

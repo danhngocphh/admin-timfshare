@@ -98,6 +98,41 @@ router.post('/toplinks', function(req, res) {
   mongodb.sendtopLink(name, date, value, res);
 });
 
+router.post('/updatetoplink', function(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  var top = req.body.top;
+  var title = req.body.title;
+  var link = req.body.link;
+  var total = req.body.total;
+  var index = req.body.index;
+  var timename = req.body.timename;
+
+
+
+  if (index === undefined || index === "") {
+    res.send(JSON.stringify({status: "error", value: "Value undefined"}));
+    return
+  }
+  mongodb.updatetoplink(timename, index, top, title, link, total, res);
+});
+
+router.post('/updatetopkey', function(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  var top = req.body.top;
+  var key = req.body.key;
+  var total = req.body.total;
+  var index = req.body.index;
+  var timename = req.body.timename;
+
+
+
+  if (index === undefined || index === "") {
+    res.send(JSON.stringify({status: "error", value: "Value undefined"}));
+    return
+  }
+  mongodb.updatetopkey(timename, index, top, key, total, res);
+});
+
 router.delete('/values/:id', function(req, res) {
   res.setHeader('Content-Type', 'application/json');
   var uuid = req.params.id;
