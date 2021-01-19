@@ -462,8 +462,8 @@ module.exports = {
                 });
 
         Links.aggregate([
-            { $group: { _id: '$link', value : { $first: "$value" }, i_total: { $sum: 1 }}},
-            { $project: { _id: 1, i_total: 1 , value: 1}}
+            { $group: { _id: '$link', value : { $first: "$value" }, title : { $first: "$title" }, i_total: { $sum: 1 }}},
+            { $project: { _id: 1, i_total: 1 , value: 1,title: 1}}
             
           ]).
           then(function (result) {
@@ -472,7 +472,7 @@ module.exports = {
                     let val = result[i]; 
                         if(val["value"] === key)
                         {
-                            values[val["_id"]] = [val["_id"], val["value"] , val["i_total"]];
+                            values[val["_id"]] = [val["_id"], val["value"] , val["i_total"], val["title"]];
 
                         }
              
