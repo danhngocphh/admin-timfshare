@@ -45,8 +45,8 @@ module.exports = {
         let totallink = 0;
         let check;
         let title = '123';
-        let values = {};
-        let links = {};
+        let values = [];
+        let links = [];
         
 
         await Values.count({}, function( err, count){
@@ -112,6 +112,8 @@ module.exports = {
                        
                     }
 
+            selectionSortkey(values);
+
 
             title = process.env.TITLE || 'Fshare demo'
             // [ { maxBalance: 98000 } ]
@@ -128,6 +130,7 @@ module.exports = {
                             links[i] = [link.link, link.search_total, link.title, link.position];
                        
                     }
+                selectionSort(links);
                 title = process.env.TITLE || 'Fshare demo'
                 // [ { maxBalance: 98000 } ]
                 
