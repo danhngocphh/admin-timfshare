@@ -8,7 +8,7 @@ $('#exampleModal').on('show.bs.modal', function (event) {
     // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
     var modal = $(this)
-    modal.find('.modal-title').text('New message to ' + top)
+   
     modal.find('.modal-body #top').val(top)
     modal.find('.modal-body #title').val(title)
     modal.find('.modal-body #link').val(link)
@@ -26,7 +26,7 @@ $('#exampleModal').on('show.bs.modal', function (event) {
     // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
     // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
     var modal = $(this)
-    modal.find('.modal-title').text('New message to ' + top)
+    
     modal.find('.modal-body #top').val(top)
     modal.find('.modal-body #key').val(key)
     modal.find('.modal-body #total').val(total)

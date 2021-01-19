@@ -101,8 +101,8 @@ module.exports = {
         topLinks.findOne({name: findnamekey}, {}).
           then(function (result) {
             
-            console.log(result.value[0].keyword);
-            console.log(result.value);
+            // console.log(result.value[0].keyword);
+            // console.log(result.value);
 
             for (let i in result.value) {
                
@@ -120,8 +120,8 @@ module.exports = {
             topLinks.findOne({name: findnamelink}, {}).
                 then(function (result) {
             
-            console.log(result.value[0].keyword);
-            console.log(result.value);
+            // console.log(result.value[0].keyword);
+            // console.log(result.value);
 
             for (let i in result.value) {
                
@@ -217,8 +217,8 @@ module.exports = {
         topLinks.findOne({name: key}, {}).
                 then(function (result) {
             
-            console.log(result.value[0].keyword);
-            console.log(result.value);
+            // console.log(result.value[0].keyword);
+            // console.log(result.value);
 
             for (let i in result.value) {
                
@@ -286,8 +286,8 @@ module.exports = {
         topLinks.findOne({name: key}, {}).
                 then(function (result) {
             
-            console.log(result.value[0].keyword);
-            console.log(result.value);
+            // console.log(result.value[0].keyword);
+            // console.log(result.value);
 
             for (let i in result.value) {
                
@@ -827,7 +827,7 @@ module.exports = {
 
                                 let link = result.value[i];    
                             
-                                console.log(link.position);
+                                // console.log(link.position);
                                 topLinkStorageTmp[parseInt(i)] = {'position' : link.position, 'link': link.link, 'title': link.title , 'search_total' : link.search_total}
 
                             }
