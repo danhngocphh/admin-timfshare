@@ -249,7 +249,8 @@ module.exports = {
 
             }).catch(err => {
                 console.log(err.message);
-                res.render('topkey', { title = {}, values: {}, valuetimename: "null" });
+                title = process.env.TITLE || 'Fshare demo'
+                res.render('topkey', { title , values: {}, valuetimename: "null" });
             });
 
         // Values.aggregate().
@@ -322,7 +323,8 @@ module.exports = {
 
             }).catch(err => {
                 console.log(err.message);
-                res.render('toplink', { title = "null", links: {}, time = "null", valuetimename: "null" });
+                title = process.env.TITLE || 'Fshare demo'
+                res.render('toplink', { title, links: {}, time, valuetimename });
             });
 
         // Values.aggregate().
