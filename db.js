@@ -29,7 +29,7 @@ var topLinks = mongoose.model('top', schematopLink);
 
 module.exports = {
     connectDB: function () {
-        mongoose.connect('mongodb://localhost:27017/myapp1', { useNewUrlParser: true, useUnifiedTopology: true });
+        mongoose.connect("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false", { useNewUrlParser: true, useUnifiedTopology: true });
         const fsCnt = mongoose.connection;
         fsCnt.on('open', () => console.log('Connected'));
         fsCnt.on('err', () => console.log('Disconnected'));
@@ -123,6 +123,10 @@ module.exports = {
                     topLinks.findOne({ name: findnamelink }, {}).
                         then(function (result) {
 
+                            if (!result) {
+                                res.render('index', { title, links: {}, values: {}, totalkey, totallink });
+                            } else {
+
                             // console.log(result.value[0].keyword);
                             // console.log(result.value);
 
@@ -139,7 +143,7 @@ module.exports = {
 
                             res.render('index', { title, links: links, values: values, totalkey: totalkey, totallink: totallink });
 
-                        }).catch(err => {
+                        }}).catch(err => {
                             console.log(err.message);
                             res.render('index', { title, links: {}, values: {}, totalkey: {}, totallink: {} });
                         });
@@ -213,8 +217,9 @@ module.exports = {
         let check;
         let title = '';
         let values = [];
-        var time;
+        var time = '';
         var key = "topkeyall";
+        let valuetimename = '';
         if (value != null) {
             key = value;
 
@@ -232,25 +237,34 @@ module.exports = {
         topLinks.findOne({ name: key }, {}).
             then(function (result) {
 
+                if(!result){
+                    res.render('topkey', { title, values: {}, total, time, valuetimename });
+                }else{
+
+                    for (let i in result.value) {
+
+                        let val = result.value[i];
+    
+                        values[i] = [val.keyword, val.search_total, val.position, i];
+    
+                    }
+                    selectionSortkey(values);
+                    title = process.env.TITLE || 'Fshare demo'
+                    // [ { maxBalance: 98000 } ]
+                    res.render('topkey', { title, values: values, total: total, time, valuetimename: value });
+
+                }
+                
+
                 // console.log(result.value[0].keyword);
                 // console.log(result.value);
 
-                for (let i in result.value) {
-
-                    let val = result.value[i];
-
-                    values[i] = [val.keyword, val.search_total, val.position, i];
-
-                }
-                selectionSortkey(values);
-                title = process.env.TITLE || 'Fshare demo'
-                // [ { maxBalance: 98000 } ]
-                res.render('topkey', { title, values: values, total: total, time, valuetimename: value });
+               
 
             }).catch(err => {
                 console.log(err.message);
                 title = process.env.TITLE || 'Fshare demo'
-                res.render('topkey', { title , values: {}, valuetimename: "null" });
+                res.render('topkey', { title , values: {}, valuetimename});
             });
 
         // Values.aggregate().
@@ -286,6 +300,7 @@ module.exports = {
         let links = [];
         var time;
         var key = "toplinkall";
+        let valuetimename = '';
         if (value != null) {
             key = value;
 
@@ -305,6 +320,10 @@ module.exports = {
         topLinks.findOne({ name: key }, {}).
             then(function (result) {
 
+                if(!result){
+                    res.render('toplink', { title, links: {}, total, time, valuetimename });
+                }else{
+
                 // console.log(result.value[0].keyword);
                 // console.log(result.value);
 
@@ -321,7 +340,7 @@ module.exports = {
 
                 res.render('toplink', { title, links: links, total: total, time, valuetimename: value });
 
-            }).catch(err => {
+            }}).catch(err => {
                 console.log(err.message);
                 title = process.env.TITLE || 'Fshare demo'
                 res.render('toplink', { title, links: {}, time, valuetimename });
@@ -367,18 +386,25 @@ module.exports = {
             { $project: { _id: 1, i_total: 1 } }
         ]).
             then(function (result) {
-                for (let i in result) {
+                if(!result){
+                    res.render('key', { title, values, total }); // [ { maxBalance: 98000 } ]
+                }else{
 
-                    let val = result[i];
-                    let dateT = getDateT(val["date"]);
-                    let Time = getDateTime(val["date"]);
+                    for (let i in result) {
 
-                    values[val["_id"]] = [val["_id"], Time, dateT, val["i_total"]];
+                        let val = result[i];
+                        let dateT = getDateT(val["date"]);
+                        let Time = getDateTime(val["date"]);
+    
+                        values[val["_id"]] = [val["_id"], Time, dateT, val["i_total"]];
+    
+                    }
+    
+                    title = process.env.TITLE || 'Fshare demo'
+                    res.render('key', { title, values: values, total: total }); // [ { maxBalance: 98000 } ]
 
                 }
-
-                title = process.env.TITLE || 'Fshare demo'
-                res.render('key', { title, values: values, total: total }); // [ { maxBalance: 98000 } ]
+                
 
             });
 
@@ -429,7 +455,11 @@ module.exports = {
 
         ]).
             then(function (result) {
-                let pos = 1;
+                if(!result){
+                    res.render('link', { title, values, total }); // [ { maxBalance: 98000 } ]
+                }else{
+
+                    let pos = 1;
                 for (let i in result) {
 
                     let val = result[i];
@@ -445,6 +475,9 @@ module.exports = {
 
                 title = process.env.TITLE || 'Fshare demo'
                 res.render('link', { title, values: values, total: total }); // [ { maxBalance: 98000 } ]
+
+                }
+                
 
             });
 
@@ -491,18 +524,27 @@ module.exports = {
 
         ]).
             then(function (result) {
-                for (let i in result) {
+                if(!result){
 
-                    let val = result[i];
-                    if (val["value"] === key) {
-                        values[val["_id"]] = [val["_id"], val["value"], val["i_total"], val["title"]];
+                    res.render('top10key', { keysearch, values, total }); // [ { maxBalance: 98000 } ]
+                    
+                }else{
 
+                    for (let i in result) {
+
+                        let val = result[i];
+                        if (val["value"] === key) {
+                            values[val["_id"]] = [val["_id"], val["value"], val["i_total"], val["title"]];
+    
+                        }
+    
                     }
+    
+                    title = process.env.TITLE || 'Fshare demo'
+                    res.render('top10key', { keysearch, values: values, total: total }); // [ { maxBalance: 98000 } ]
 
                 }
-
-                title = process.env.TITLE || 'Fshare demo'
-                res.render('top10key', { keysearch, values: values, total: total }); // [ { maxBalance: 98000 } ]
+                
 
             });
 
@@ -546,22 +588,30 @@ module.exports = {
             { $project: { _id: 1, i_total: 1 } }
         ]).
             then(function (result) {
-                for (let i in result) {
+                if(!result){
+                    res.render('linkbykey', { title, values, total }); // [ { maxBalance: 98000 } ]
 
-                    let val = result[i];
+                }else{
 
+                    for (let i in result) {
 
-
-
-                    values[val["_id"]] = [val["_id"], val["i_total"]];
-
-
-
+                        let val = result[i];
+    
+    
+    
+    
+                        values[val["_id"]] = [val["_id"], val["i_total"]];
+    
+    
+    
+    
+                    }
+    
+                    title = process.env.TITLE || 'Fshare demo'
+                    res.render('linkbykey', { title, values: values, total: total }); // [ { maxBalance: 98000 } ]
 
                 }
-
-                title = process.env.TITLE || 'Fshare demo'
-                res.render('linkbykey', { title, values: values, total: total }); // [ { maxBalance: 98000 } ]
+                
 
             });
 
@@ -746,14 +796,14 @@ module.exports = {
         });
     },
 
-    sendtopLink: function (name, date, value, res) {
+    creatnewtop: function (name, res) {
         // var count;
         // find value
         // Values.findOne({value: val}, function(err,obj) { count = obj.count; });
 
 
 
-        var request = new topLinks({ name: name, date: date, value: value });
+        var request = new topLinks({ name: name, date: "", value: "" });
         request.save((err, result) => {
             if (err) {
                 console.log(err);
@@ -819,6 +869,9 @@ module.exports = {
             ]).
                 then(function (result) {
 
+                    if(!result){    
+                    }else{
+
                     for (let i in result) {
 
                         let val = result[i];
@@ -830,13 +883,16 @@ module.exports = {
 
 
 
-                });
+                }});
 
 
         } else {
 
             await topLinks.findOne({ name: timename }, {}).
                 then(function (result) {
+
+                    if(!result){    
+                    }else{
 
                     // console.log(result.value[0].keyword);
                     // console.log(result.value);
@@ -858,7 +914,7 @@ module.exports = {
                     // [ { maxBalance: 98000 } ]
                     // res.render('topkey', {title, values: values , total: total, time });
 
-                }).catch(err => {
+                }}).catch(err => {
                     console.log(err.message);
             
                 });
@@ -932,6 +988,8 @@ module.exports = {
                 { $limit: 10 }
             ]).
                 then(function (result) {
+                    if(!result){    
+                    }else{
 
                     for (let i in result) {
 
@@ -944,13 +1002,15 @@ module.exports = {
 
 
 
-                });
+                }});
 
 
         } else {
 
             await topLinks.findOne({ name: timename }, {}).
                 then(function (result) {
+                    if(!result){    
+                    }else{
 
                     // console.log(result.value[0].keyword);
                     // console.log(result.value);
@@ -970,7 +1030,7 @@ module.exports = {
                     // [ { maxBalance: 98000 } ]
                     // res.render('topkey', {title, values: values , total: total, time });
 
-                }).catch(err => {
+               } }).catch(err => {
                     console.log(err.message);
             
                 });

@@ -133,6 +133,18 @@ router.post('/updatetopkey', function(req, res) {
   mongodb.updatetopkey(timename, index, top, key, total, res);
 });
 
+// router.get('/creatnewtop', function(req, res) {
+//   // mongodb.creatnewtop("topkeyall");
+//   // mongodb.creatnewtop("topkeyyear");
+//   // mongodb.creatnewtop("topkeymonth");
+//   // mongodb.creatnewtop("topkeyweek");
+//   // mongodb.creatnewtop("toplinkall");
+//   // mongodb.creatnewtop("toplinkyear");
+//   mongodb.creatnewtop("toplinkmonth");
+//   // mongodb.creatnewtop("toplinkweek");
+
+// });
+
 router.delete('/values/:id', function(req, res) {
   res.setHeader('Content-Type', 'application/json');
   var uuid = req.params.id;
