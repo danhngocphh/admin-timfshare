@@ -23,17 +23,17 @@ var schematopLink = mongoose.Schema({
     date: Date,
     value: Object
 });
-var topLinks = mongoose.model('top', schematopLink);
+var topLinks = mongoose.model('tops', schematopLink);
 
 
 
 module.exports = {
     connectDB: function () {
-        mongoose.connect("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false", { useNewUrlParser: true, useUnifiedTopology: true });
+        mongoose.connect("mongodb+srv://vegarnom:vegar8226@cluster0.eotns.mongodb.net/dbda1?retryWrites=true&w=majority  ");
+         // mongoose.connect("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false", { useNewUrlParser: true, useUnifiedTopology: true });
         const fsCnt = mongoose.connection;
         fsCnt.on('open', () => console.log('Connected'));
         fsCnt.on('err', () => console.log('Disconnected'));
-        // mongoose.connect("mongodb+srv://vegarnom:vegar8226@cluster0.eotns.mongodb.net/dbda1?retryWrites=true&w=majority  ");
     },
 
     updateGauge: function () {
@@ -127,23 +127,24 @@ module.exports = {
                                 res.render('index', { title, links: {}, values: {}, totalkey, totallink });
                             } else {
 
-                            // console.log(result.value[0].keyword);
-                            // console.log(result.value);
+                                // console.log(result.value[0].keyword);
+                                // console.log(result.value);
 
-                            for (let i in result.value) {
+                                for (let i in result.value) {
 
-                                let link = result.value[i];
+                                    let link = result.value[i];
 
-                                links[i] = [link.link, link.search_total, link.title, link.position];
+                                    links[i] = [link.link, link.search_total, link.title, link.position];
+
+                                }
+                                selectionSort(links);
+                                title = process.env.TITLE || 'Fshare demo'
+                                // [ { maxBalance: 98000 } ]
+
+                                res.render('index', { title, links: links, values: values, totalkey: totalkey, totallink: totallink });
 
                             }
-                            selectionSort(links);
-                            title = process.env.TITLE || 'Fshare demo'
-                            // [ { maxBalance: 98000 } ]
-
-                            res.render('index', { title, links: links, values: values, totalkey: totalkey, totallink: totallink });
-
-                        }}).catch(err => {
+                        }).catch(err => {
                             console.log(err.message);
                             res.render('index', { title, links: {}, values: {}, totalkey: {}, totallink: {} });
                         });
@@ -237,16 +238,16 @@ module.exports = {
         topLinks.findOne({ name: key }, {}).
             then(function (result) {
 
-                if(!result){
+                if (!result) {
                     res.render('topkey', { title, values: {}, total, time, valuetimename });
-                }else{
+                } else {
 
                     for (let i in result.value) {
 
                         let val = result.value[i];
-    
+
                         values[i] = [val.keyword, val.search_total, val.position, i];
-    
+
                     }
                     selectionSortkey(values);
                     title = process.env.TITLE || 'Fshare demo'
@@ -254,17 +255,17 @@ module.exports = {
                     res.render('topkey', { title, values: values, total: total, time, valuetimename: value });
 
                 }
-                
+
 
                 // console.log(result.value[0].keyword);
                 // console.log(result.value);
 
-               
+
 
             }).catch(err => {
                 console.log(err.message);
                 title = process.env.TITLE || 'Fshare demo'
-                res.render('topkey', { title , values: {}, valuetimename});
+                res.render('topkey', { title, values: {}, valuetimename });
             });
 
         // Values.aggregate().
@@ -320,27 +321,28 @@ module.exports = {
         topLinks.findOne({ name: key }, {}).
             then(function (result) {
 
-                if(!result){
+                if (!result) {
                     res.render('toplink', { title, links: {}, total, time, valuetimename });
-                }else{
+                } else {
 
-                // console.log(result.value[0].keyword);
-                // console.log(result.value);
+                    // console.log(result.value[0].keyword);
+                    // console.log(result.value);
 
-                for (let i in result.value) {
+                    for (let i in result.value) {
 
-                    let link = result.value[i];
+                        let link = result.value[i];
 
-                    links[i] = [link.link, link.search_total, link.title, link.position, i];
+                        links[i] = [link.link, link.search_total, link.title, link.position, i];
+
+                    }
+                    title = process.env.TITLE || 'Fshare demo'
+                    // [ { maxBalance: 98000 } ]
+                    selectionSort(links);
+
+                    res.render('toplink', { title, links: links, total: total, time, valuetimename: value });
 
                 }
-                title = process.env.TITLE || 'Fshare demo'
-                // [ { maxBalance: 98000 } ]
-                selectionSort(links);
-
-                res.render('toplink', { title, links: links, total: total, time, valuetimename: value });
-
-            }}).catch(err => {
+            }).catch(err => {
                 console.log(err.message);
                 title = process.env.TITLE || 'Fshare demo'
                 res.render('toplink', { title, links: {}, time, valuetimename });
@@ -386,25 +388,25 @@ module.exports = {
             { $project: { _id: 1, i_total: 1 } }
         ]).
             then(function (result) {
-                if(!result){
+                if (!result) {
                     res.render('key', { title, values, total }); // [ { maxBalance: 98000 } ]
-                }else{
+                } else {
 
                     for (let i in result) {
 
                         let val = result[i];
                         let dateT = getDateT(val["date"]);
                         let Time = getDateTime(val["date"]);
-    
+
                         values[val["_id"]] = [val["_id"], Time, dateT, val["i_total"]];
-    
+
                     }
-    
+
                     title = process.env.TITLE || 'Fshare demo'
                     res.render('key', { title, values: values, total: total }); // [ { maxBalance: 98000 } ]
 
                 }
-                
+
 
             });
 
@@ -455,29 +457,29 @@ module.exports = {
 
         ]).
             then(function (result) {
-                if(!result){
+                if (!result) {
                     res.render('link', { title, values, total }); // [ { maxBalance: 98000 } ]
-                }else{
+                } else {
 
                     let pos = 1;
-                for (let i in result) {
+                    for (let i in result) {
 
-                    let val = result[i];
-
-
-                    values[pos] = [val["_id"]["link"], val["title"], val["i_total"], val["value"]];
-                    pos++;
+                        let val = result[i];
 
 
+                        values[pos] = [val["_id"]["link"], val["title"], val["i_total"], val["value"]];
+                        pos++;
 
+
+
+
+                    }
+
+                    title = process.env.TITLE || 'Fshare demo'
+                    res.render('link', { title, values: values, total: total }); // [ { maxBalance: 98000 } ]
 
                 }
 
-                title = process.env.TITLE || 'Fshare demo'
-                res.render('link', { title, values: values, total: total }); // [ { maxBalance: 98000 } ]
-
-                }
-                
 
             });
 
@@ -524,27 +526,27 @@ module.exports = {
 
         ]).
             then(function (result) {
-                if(!result){
+                if (!result) {
 
                     res.render('top10key', { keysearch, values, total }); // [ { maxBalance: 98000 } ]
-                    
-                }else{
+
+                } else {
 
                     for (let i in result) {
 
                         let val = result[i];
                         if (val["value"] === key) {
                             values[val["_id"]] = [val["_id"], val["value"], val["i_total"], val["title"]];
-    
+
                         }
-    
+
                     }
-    
+
                     title = process.env.TITLE || 'Fshare demo'
                     res.render('top10key', { keysearch, values: values, total: total }); // [ { maxBalance: 98000 } ]
 
                 }
-                
+
 
             });
 
@@ -588,30 +590,30 @@ module.exports = {
             { $project: { _id: 1, i_total: 1 } }
         ]).
             then(function (result) {
-                if(!result){
+                if (!result) {
                     res.render('linkbykey', { title, values, total }); // [ { maxBalance: 98000 } ]
 
-                }else{
+                } else {
 
                     for (let i in result) {
 
                         let val = result[i];
-    
-    
-    
-    
+
+
+
+
                         values[val["_id"]] = [val["_id"], val["i_total"]];
-    
-    
-    
-    
+
+
+
+
                     }
-    
+
                     title = process.env.TITLE || 'Fshare demo'
                     res.render('linkbykey', { title, values: values, total: total }); // [ { maxBalance: 98000 } ]
 
                 }
-                
+
 
             });
 
@@ -812,7 +814,7 @@ module.exports = {
             }
             this.updateGauge();
             statsd.increment('creations');
-            res.status(201).send(JSON.stringify({ status: "ok", value: result["value"], id: result["_id"] }));
+            res.send(JSON.stringify({ status: "ok", value: result["value"], id: result["_id"] }));
         });
     },
 
@@ -869,21 +871,22 @@ module.exports = {
             ]).
                 then(function (result) {
 
-                    if(!result){    
-                    }else{
+                    if (!result) {
+                    } else {
 
-                    for (let i in result) {
+                        for (let i in result) {
 
-                        let val = result[i];
+                            let val = result[i];
 
-                        let posTmp = parseInt(i) + 1;
-                        topLinkStorageTmp[parseInt(i)] = { 'position': posTmp, 'link': val["_id"], 'title': val["title"], 'search_total': val["i_total"] }
+                            let posTmp = parseInt(i) + 1;
+                            topLinkStorageTmp[parseInt(i)] = { 'position': posTmp, 'link': val["_id"], 'title': val["title"], 'search_total': val["i_total"] }
+
+                        }
+
+
 
                     }
-
-
-
-                }});
+                });
 
 
         } else {
@@ -891,32 +894,33 @@ module.exports = {
             await topLinks.findOne({ name: timename }, {}).
                 then(function (result) {
 
-                    if(!result){    
-                    }else{
+                    if (!result) {
+                    } else {
 
-                    // console.log(result.value[0].keyword);
-                    // console.log(result.value);
+                        // console.log(result.value[0].keyword);
+                        // console.log(result.value);
 
-                    for (let i in result.value) {
-                        if (i == index) {
-                            topLinkStorageTmp[parseInt(i)] = { 'position': parseInt(top), 'link': link, 'title': title, 'search_total': parseInt(total) }
+                        for (let i in result.value) {
+                            if (i == index) {
+                                topLinkStorageTmp[parseInt(i)] = { 'position': parseInt(top), 'link': link, 'title': title, 'search_total': parseInt(total) }
 
-                        } else {
+                            } else {
 
-                            let link = result.value[i];
+                                let link = result.value[i];
 
-                            // console.log(link.position);
-                            topLinkStorageTmp[parseInt(i)] = { 'position': link.position, 'link': link.link, 'title': link.title, 'search_total': link.search_total }
+                                // console.log(link.position);
+                                topLinkStorageTmp[parseInt(i)] = { 'position': link.position, 'link': link.link, 'title': link.title, 'search_total': link.search_total }
 
+                            }
                         }
-                    }
-                    // title = process.env.TITLE || 'Fshare demo'
-                    // [ { maxBalance: 98000 } ]
-                    // res.render('topkey', {title, values: values , total: total, time });
+                        // title = process.env.TITLE || 'Fshare demo'
+                        // [ { maxBalance: 98000 } ]
+                        // res.render('topkey', {title, values: values , total: total, time });
 
-                }}).catch(err => {
+                    }
+                }).catch(err => {
                     console.log(err.message);
-            
+
                 });
 
         }
@@ -988,51 +992,53 @@ module.exports = {
                 { $limit: 10 }
             ]).
                 then(function (result) {
-                    if(!result){    
-                    }else{
+                    if (!result) {
+                    } else {
 
-                    for (let i in result) {
+                        for (let i in result) {
 
-                        let val = result[i];
+                            let val = result[i];
 
-                        let posTmp = parseInt(i) + 1;
-                        topKeyStorageTmp[parseInt(i)] = { 'position': posTmp, 'keyword': val["_id"], 'search_total': val["i_total"] }
+                            let posTmp = parseInt(i) + 1;
+                            topKeyStorageTmp[parseInt(i)] = { 'position': posTmp, 'keyword': val["_id"], 'search_total': val["i_total"] }
+
+                        }
+
+
 
                     }
-
-
-
-                }});
+                });
 
 
         } else {
 
             await topLinks.findOne({ name: timename }, {}).
                 then(function (result) {
-                    if(!result){    
-                    }else{
+                    if (!result) {
+                    } else {
 
-                    // console.log(result.value[0].keyword);
-                    // console.log(result.value);
+                        // console.log(result.value[0].keyword);
+                        // console.log(result.value);
 
-                    for (let i in result.value) {
-                        if (i == index) {
-                            topKeyStorageTmp[parseInt(i)] = { 'position': parseInt(top), 'keyword': key, 'search_total': parseInt(total) }
+                        for (let i in result.value) {
+                            if (i == index) {
+                                topKeyStorageTmp[parseInt(i)] = { 'position': parseInt(top), 'keyword': key, 'search_total': parseInt(total) }
 
-                        } else {
+                            } else {
 
-                            let val = result.value[i];
-                            topKeyStorageTmp[parseInt(i)] = { 'position': val.position, 'keyword': val.keyword, 'search_total': val.search_total }
+                                let val = result.value[i];
+                                topKeyStorageTmp[parseInt(i)] = { 'position': val.position, 'keyword': val.keyword, 'search_total': val.search_total }
 
+                            }
                         }
-                    }
-                    // title = process.env.TITLE || 'Fshare demo'
-                    // [ { maxBalance: 98000 } ]
-                    // res.render('topkey', {title, values: values , total: total, time });
+                        // title = process.env.TITLE || 'Fshare demo'
+                        // [ { maxBalance: 98000 } ]
+                        // res.render('topkey', {title, values: values , total: total, time });
 
-               } }).catch(err => {
+                    }
+                }).catch(err => {
                     console.log(err.message);
-            
+
                 });
 
         }
