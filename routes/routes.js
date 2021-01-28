@@ -11,92 +11,69 @@ router.get('/', function (req, res) {
 router.get('/key', function (req, res) {
   mongodb.getValkey(res);
 });
-
-
 router.get('/topkey/:value', function (req, res) {
   var value = req.params.value;
   mongodb.getTopKey(value, res);
 });
-
 router.get('/toplink/:value', function (req, res) {
   var value = req.params.value;
   mongodb.getTopLink(value, res);
 });
-
 router.get('/link', function (req, res) {
   mongodb.getVallink(res);
 });
-
 router.get('/linkbykey', function (req, res) {
   mongodb.getVallinkbykey(res);
 });
-
-
 router.get('/key-detail/:keysearch', function (req, res) {
   var key = req.params.keysearch;
   mongodb.getkeyDetail(key, res);
 });
-
 router.get('/top10key/:key', function (req, res) {
   var key = req.params.key;
   mongodb.getlinkbytop10key(key, res);
 });
-
-
 router.get('/linkbykey-detail/:link', function (req, res) {
   var key = req.params.link;
   mongodb.getlinkbykeyDetail(key, res);
 });
-
 router.get('/linkbylink-detail/:link', function (req, res) {
   var key = req.params.link;
   mongodb.getlinkbylinkDetail(key, res);
 });
-
 router.post('/values', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   var val = req.body.value;
   var date = req.body.date;
-
-
   if (val === undefined || val === "") {
     res.send(JSON.stringify({ status: "error", value: "Value undefined" }));
     return
   }
   mongodb.sendVal(val, date, res);
 });
-
 router.post('/links', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   var val = req.body.value;
   var link = req.body.link;
   var title = req.body.title;
   var date = req.body.date;
-
-
   if (val === undefined || val === "") {
     res.send(JSON.stringify({ status: "error", value: "Value undefined" }));
     return
   }
   mongodb.sendLink(val, link, title, date, res);
 });
-
-
 router.post('/toplinks', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   var name = req.body.name;
   var date = req.body.date;
   var value = req.body.value;
-
-
-
   if (value === undefined || value === "") {
     res.send(JSON.stringify({ status: "error", value: "Value undefined" }));
     return
   }
   mongodb.sendtopLink(name, date, value, res);
 });
-
 router.post('/updatetoplink', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   var top = req.body.top;
@@ -105,16 +82,12 @@ router.post('/updatetoplink', function (req, res) {
   var total = req.body.total;
   var index = req.body.index;
   var timename = req.body.timename;
-
-
-
   if (index === undefined || index === "") {
     res.send(JSON.stringify({ status: "error", value: "Value undefined" }));
     return
   }
   mongodb.updatetoplink(timename, index, top, title, link, total, res);
 });
-
 router.post('/updatetopkey', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   var top = req.body.top;
@@ -122,16 +95,12 @@ router.post('/updatetopkey', function (req, res) {
   var total = req.body.total;
   var index = req.body.index;
   var timename = req.body.timename;
-
-
-
   if (index === undefined || index === "") {
     res.send(JSON.stringify({ status: "error", value: "Value undefined" }));
     return
   }
   mongodb.updatetopkey(timename, index, top, key, total, res);
 });
-
 // router.get('/creatnewtop', function(req, res) {
 //   // mongodb.creatnewtop("topkeyall");
 //   // mongodb.creatnewtop("topkeyyear");
@@ -141,13 +110,10 @@ router.post('/updatetopkey', function (req, res) {
 //   // mongodb.creatnewtop("toplinkyear");
 //   mongodb.creatnewtop("toplinkmonth");
 //   // mongodb.creatnewtop("toplinkweek");
-
 // });
-
 router.delete('/values/:id', function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   var uuid = req.params.id;
-
   if (uuid === undefined || uuid === "") {
     res.send(JSON.stringify({ status: "error", value: "UUID undefined" }));
     return

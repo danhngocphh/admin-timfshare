@@ -15,42 +15,50 @@ aside.app-sidebar
 		
 		li.treeview(class={'is-expanded': activeGroup == 'pages'})
 			a.app-menu__item(href='#' data-toggle='treeview')
-				i.app-menu__icon.fa.fa-file-text
-				span.app-menu__label Top
+				i.app-menu__icon.fa.fa-th-list
+				span.app-menu__label Top Keysearch
 				i.treeview-indicator.fa.fa-angle-right
 			ul.treeview-menu
 				li
 					a.treeview-item(href='/topkey/topkeyall' class={'active': activePage == 'blank-page'})
 						i.icon.fa.fa-circle-o
-						|  Top 10 Key All
+						|  Key All
 				li
 					a.treeview-item(href='/topkey/topkeyyear')
 						i.icon.fa.fa-circle-o
-						|  Top 10 Key Year
+						|  Key Year
 				li
 					a.treeview-item(href='/topkey/topkeymonth')
 						i.icon.fa.fa-circle-o
-						|  Top 10 Key Month
+						|  Key Month
 				li
 					a.treeview-item(href='/topkey/topkeyweek')
 						i.icon.fa.fa-circle-o
-						|  Top 10 Key Week
+						|  Key Week
 				li
-					a.treeview-item(href='/toplink/toplinkall' class={'active': activePage == 'user-page'})
-						i.icon.fa.fa-circle-o
-						|  Top 10 Link All
+
+		li.treeview(class={'is-expanded': activeGroup == 'tables'})
+			a.app-menu__item(href='#' data-toggle='treeview')
+				i.app-menu__icon.fa.fa-th-list
+				span.app-menu__label Link Hot
+				i.treeview-indicator.fa.fa-angle-right
+			ul.treeview-menu
 				li
-					a.treeview-item(href='/toplink/toplinkyear' class={'active': activePage == 'invoice-page'})
+					a.treeview-item(href='/toplink/toplinkall' class={'active': activePage == 'basic-table'})
 						i.icon.fa.fa-circle-o
-						|  Top 10 Link Year
+						|  Link Hot All
 				li
-					a.treeview-item(href='/toplink/toplinkmonth' class={'active': activePage == 'invoice-page'})
+					a.treeview-item(href='/toplink/toplinkyear' class={'active': activePage == 'basic-table'})
 						i.icon.fa.fa-circle-o
-						|  Top 10 Link Month
+						|  Link Hot Year
 				li
-					a.treeview-item(href='/toplink/toplinkweek' class={'active': activePage == 'calendar-page'})
+					a.treeview-item(href='/toplink/toplinkmonth' class={'active': activePage == 'basic-table'})
 						i.icon.fa.fa-circle-o
-						|  Top 10 Link Week
+						|  Link Hot Month
+				li
+					a.treeview-item(href='/toplink/toplinkweek' class={'active': activePage == 'basic-table'})
+						i.icon.fa.fa-circle-o
+						|  Link Hot Week
 				//- li
 				//- 	a.treeview-item(href='page-mailbox.html' class={'active': activePage == 'mailbox-page'})
 				//- 		i.icon.fa.fa-circle-o
@@ -102,7 +110,7 @@ aside.app-sidebar
 				li
 					a.treeview-item(href='/key' class={'active': activePage == 'ui-bootstrap'})
 						i.icon.fa.fa-circle-o
-						|  Data Table
+						|  Data 
 				//- li
 				//- 	a.treeview-item(href='https://fontawesome.com/v4.7.0/icons/', target="_blank", rel="noopener")
 				//- 		i.icon.fa.fa-circle-o
@@ -125,11 +133,11 @@ aside.app-sidebar
 				li
 					a.treeview-item(href='/link' class={'active': activePage == 'form-components'})
 						i.icon.fa.fa-circle-o
-						|  Data Talble
+						|  Data 
 				li
 					a.treeview-item(href='/linkbykey' class={'active': activePage == 'form-custom'})
 						i.icon.fa.fa-circle-o
-						|  Link By Keysearch
+						|  Link Of Keysearch
 				//- li
 				//- 	a.treeview-item(href='form-samples.html' class={'active': activePage == 'form-samples'})
 				//- 		i.icon.fa.fa-circle-o
@@ -143,26 +151,7 @@ aside.app-sidebar
 		//- 	a.app-menu__item(href='charts.html' class={'active': activePage == 'charts'})
 		//- 		i.app-menu__icon.fa.fa-pie-chart
 		//- 		span.app-menu__label Charts
-
 		
-
-		//- li.treeview(class={'is-expanded': activeGroup == 'tables'})
-		//- 	a.app-menu__item(href='#' data-toggle='treeview')
-		//- 		i.app-menu__icon.fa.fa-th-list
-		//- 		span.app-menu__label Tables
-		//- 		i.treeview-indicator.fa.fa-angle-right
-		//- 	ul.treeview-menu
-		//- 		li
-		//- 			a.treeview-item(href='table-basic.html' class={'active': activePage == 'basic-table'})
-		//- 				i.icon.fa.fa-circle-o
-		//- 				|  Basic Tables
-		//- 		li
-		//- 			a.treeview-item(href='table-data-table.html' class={'active': activePage == 'data-table'})
-		//- 				i.icon.fa.fa-circle-o
-		//- 				|  Data Tables
-
-
-
 		//- li
 		//- 	a.app-menu__item(href='docs.html' class={'active': activePage == 'docs'})
 		//- 		i.app-menu__icon.fa.fa-file-code-o
