@@ -36,6 +36,10 @@ aside.app-sidebar
 						i.icon.fa.fa-circle-o
 						|  Key Week
 				li
+					a.treeview-item(href='/block/key')
+						i.icon.fa.fa-circle-o
+						|  Block Key
+				li
 
 		li.treeview(class={'is-expanded': activeGroup == 'tables'})
 			a.app-menu__item(href='#' data-toggle='treeview')
@@ -59,6 +63,10 @@ aside.app-sidebar
 					a.treeview-item(href='/toplink/toplinkweek' class={'active': activePage == 'basic-table'})
 						i.icon.fa.fa-circle-o
 						|  Link Hot Week
+				li
+					a.treeview-item(href='/block/link' class={'active': activePage == 'basic-table'})
+						i.icon.fa.fa-circle-o
+						|  Block Link
 				//- li
 				//- 	a.treeview-item(href='page-mailbox.html' class={'active': activePage == 'mailbox-page'})
 				//- 		i.icon.fa.fa-circle-o

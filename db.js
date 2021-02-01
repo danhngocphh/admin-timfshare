@@ -24,6 +24,12 @@ var schematopLink = mongoose.Schema({
 });
 var topLinks = mongoose.model('tops', schematopLink);
 
+var schemaBlock = mongoose.Schema({
+    kind: String,
+    value: Object
+});
+var Blocks = mongoose.model('blocks', schemaBlock);
+
 module.exports = {
     connectDB: function () {
         mongoose.connect("mongodb+srv://vegarnom:vegar8226@cluster0.eotns.mongodb.net/dbda1?retryWrites=true&w=majority  ");
@@ -87,6 +93,26 @@ module.exports = {
             }).catch(err => {
                 console.log(err.message);
                 res.render('index', { title, links: {}, values: {}, totalkey: {}, totallink: {} });
+            });
+    },
+    getBlock: function (kind, res) {
+        let title = '';
+        let values = [];
+        Blocks.findOne({ kind: kind }, {}).
+            then(function (result) {
+                if (!result) {
+                    res.render('block', { title, values: {}, kind });
+                } else {
+                    for (let i in result.value) {
+                        let val = result.value[i];
+                        values[i] = val;
+                    }
+                    res.render('block', { title, values, kind});
+                }
+            }).catch(err => {
+                console.log(err.message);
+                title = process.env.TITLE || 'Fshare demo'
+                res.render('block', { title, values: {}, kind});
             });
     },
     getTopKey: function (value, res) {
@@ -378,6 +404,19 @@ module.exports = {
     },
     updatetoplink: async function (timename, index, top, title, link, total, res) {
         var topLinkStorageTmp = {};
+        let listblock = [];
+        await Blocks.findOne({ kind: "link" }, {}).
+            then(function (result) {
+                if (!result) {
+                } else {
+                    for (let i in result.value) {
+                        let val = result.value[i];
+                        listblock[i] = val;
+                    }
+                }
+            }).catch(err => {
+                console.log(err.message);
+            });
         if (index < 0) {
             var curr = new Date;
             switch (timename) {
@@ -412,7 +451,7 @@ module.exports = {
                     nametoplink = "toplinkall";
             }
             await Links.aggregate([
-                { $match: { date: { $gte: dategtelink, $lt: dateltlink } } },
+                { $match: { date: { $gte: dategtelink, $lt: dateltlink } , link: {$nin: listblock }} },
                 { $group: { _id: '$link', i_total: { $sum: 1 }, title: { $first: "$title" } } },
                 { $project: { _id: 1, i_total: 1, title: 1 } },
                 { $sort: { i_total: -1 } },
@@ -460,6 +499,19 @@ module.exports = {
     updatetopkey: async function (timename, index, top, key, total, res) {
         index = parseInt(index);
         var topKeyStorageTmp = {};
+        let listblock = [];
+        await Blocks.findOne({ kind: "key" }, {}).
+            then(function (result) {
+                if (!result) {
+                } else {
+                    for (let i in result.value) {
+                        let val = result.value[i];
+                        listblock[i] = val;
+                    }
+                }
+            }).catch(err => {
+                console.log(err.message);
+            });
         if (index < 0) {
             var curr = new Date;
             switch (timename) {
@@ -493,8 +545,9 @@ module.exports = {
                     var datelt = new Date();
                     namekeylink = "topkeyall";
             }
+            //["123","1233"]
             await Values.aggregate([
-                { $match: { date: { $gte: dategte, $lt: datelt } } },
+                { $match: { date: { $gte: dategte, $lt: datelt } , value: {$nin: listblock }} },
                 { $group: { _id: '$value', i_total: { $sum: 1 } } },
                 { $project: { _id: 1, i_total: 1, date: 1 } },
                 { $sort: { i_total: -1 } },
@@ -536,6 +589,60 @@ module.exports = {
             this.updateGauge();
             statsd.increment('creations');
             res.redirect('/topkey/' + timename);
+        });
+    },
+    delblock: async function (kind, _value, res) {
+        let values = [];
+        await Blocks.findOne({ kind: kind }, {}).
+            then(function (result) {
+                if (!result) {
+                } else {
+                    for (let i in result.value) {
+                        let val = result.value[i];
+                        values[i] = val;
+                    }
+                }
+            }).catch(err => {
+                console.log(err.message);
+            });
+        const removeValue = values.filter(function (value, index, arr) {
+            return value != _value;
+        });
+        await Blocks.update({ kind: kind }, { $set: { value: removeValue } }, (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send(JSON.stringify({ status: "error", value: "Error, db request failed" }));
+                return
+            }
+            this.updateGauge();
+            statsd.increment('creations');
+            res.redirect('/block/' + kind);
+        });
+    },
+    addblock: async function (kind, _value, res) {
+        let values = [];
+        await Blocks.findOne({ kind: kind }, {}).
+            then(function (result) {
+                if (!result) {
+                } else {
+                    for (let i in result.value) {
+                        let val = result.value[i];
+                        values[i] = val;
+                    }
+                }
+            }).catch(err => {
+                console.log(err.message);
+            });
+         values.push(_value);
+        await Blocks.update({ kind: kind }, { $set: { value: values } }, (err, result) => {
+            if (err) {
+                console.log(err);
+                res.send(JSON.stringify({ status: "error", value: "Error, db request failed" }));
+                return
+            }
+            this.updateGauge();
+            statsd.increment('creations');
+            res.redirect('/block/' + kind);
         });
     },
     delVal: function (id) {

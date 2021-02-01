@@ -1,0 +1,73 @@
+extends layouts/_layout.pug
+
+block variables
+	- var activePage = '';
+	- var activeGroup = '';
+
+block title
+	title Data Table - Vali Admin
+
+block content
+	.app-title
+		div
+			h1
+				i.fa.fa-th-list
+				|  Block #{kind}
+			p Table to display analytical data effectively
+
+		ul.app-breadcrumb.breadcrumb.side
+			li.breadcrumb-item
+				i.fa.fa-home.fa-lg
+			li.breadcrumb-item
+				| Block #{kind}
+			li.breadcrumb-item.active
+				a(href="#") Data Table
+	#exampleModal2.modal.fade(role='dialog')
+		.modal-dialog
+			.modal-content
+				.modal-header
+					a.close(data-dismiss='modal') &times;
+					h5#exampleModalLabel.modal-title Add
+				form#contactForm(name='contact' role='form' action="/addblock" method="post")
+					.modal-body
+						.form-group
+							label(for='title') Value
+							input.form-control(type='text' id='value' name='value')
+							input.form-control(type='hidden' id='kind' name='kind'  value= kind)
+						.modal-footer
+							button.btn.btn-default(type='button' data-dismiss='modal') Close
+							input#submit.btn.btn-success(type='submit')
+
+	.row
+		.col-md-12
+			.tile
+				.tile-body
+					.table-responsive
+						table.table.table-hover.table-bordered#sampleTable
+							thead
+								tr
+									th #
+									th Value
+									th: button.btn.btn-info.btn-lg(type='button' data-toggle='modal' data-target='#exampleModal2' data-top='' data-key='' data-total='' data-index='') Add
+					
+									
+							tbody
+								each val, uuid in values
+									tr
+										td 1									
+										td #{val}
+										td: form#contactForm(name='contact' role='form' action="/delblock" method="post")
+											input.form-control(type='hidden' id='kind' name='kind'  value= kind)
+											input.form-control(type='hidden' id='value' name='value'  value= val)
+											input#submit.btn.btn-success(type='submit' value = "Unblock")
+											
+																				
+								
+
+block specific-js
+	script(type='text/javascript', src="/js/update.js")
+	// Data table plugin
+	script(type='text/javascript', src="/js/plugins/jquery.dataTables.min.js")
+	script(type='text/javascript', src="/js/plugins/dataTables.bootstrap.min.js")
+	script(type='text/javascript').
+		$('#sampleTable').DataTable();

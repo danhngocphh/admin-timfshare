@@ -11,6 +11,10 @@ router.get('/', function (req, res) {
 router.get('/key', function (req, res) {
   mongodb.getValkey(res);
 });
+router.get('/block/:kind', function (req, res) {
+  var kind = req.params.kind;
+  mongodb.getBlock(kind, res);
+});
 router.get('/topkey/:value', function (req, res) {
   var value = req.params.value;
   mongodb.getTopKey(value, res);
@@ -100,6 +104,27 @@ router.post('/updatetopkey', function (req, res) {
     return
   }
   mongodb.updatetopkey(timename, index, top, key, total, res);
+});
+
+router.post('/delblock', function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  var kind = req.body.kind;
+  var value = req.body.value;
+  if (kind === undefined || kind === "") {
+    res.send(JSON.stringify({ status: "error", value: "kink undefined" }));
+    return
+  }
+  mongodb.delblock(kind, value, res);
+});
+router.post('/addblock', function (req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  var kind = req.body.kind;
+  var value = req.body.value;
+  if (kind === undefined || kind === "") {
+    res.send(JSON.stringify({ status: "error", value: "kink undefined" }));
+    return
+  }
+  mongodb.addblock(kind, value, res);
 });
 // router.get('/creatnewtop', function(req, res) {
 //   // mongodb.creatnewtop("topkeyall");
