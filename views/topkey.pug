@@ -27,7 +27,7 @@ block content
 			.modal-content
 				.modal-header
 					a.close(data-dismiss='modal') &times;
-					h5#exampleModalLabel.modal-title Update
+					h5#exampleModalLabel.modal-title Edit
 				form#contactForm(name='contact' role='form' action="/updatetopkey" method="post")
 					.modal-body
 						.form-group
@@ -67,7 +67,7 @@ block content
 										td #{val[2]}
 										td: a(href='/key-detail/'+ val[0]) #{val[0]}										
 										td #{val[1]}
-										td: button.btn.btn-info.btn-lg(type='button' data-toggle='modal' data-target='#exampleModal2' data-top= val[2] data-key= val[0] data-total= val[1] data-index= val[3]) Update
+										td: button.btn.btn-info.btn-lg(type='button' data-toggle='modal' data-target='#exampleModal2' data-top= val[2] data-key= val[0] data-total= val[1] data-index= val[3]) Edit
 											
 																				
 								

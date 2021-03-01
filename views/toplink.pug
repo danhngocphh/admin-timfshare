@@ -28,7 +28,7 @@ block content
 			.modal-content
 				.modal-header
 					a.close(data-dismiss='modal') &times;
-					h5#exampleModalLabel.modal-title Update
+					h5#exampleModalLabel.modal-title Edit
 				form#contactForm(name='contact' role='form' action="/updatetoplink" method="post")
 					.modal-body
 						.form-group
@@ -77,7 +77,7 @@ block content
 										td: a(href='/linkbylink-detail/'+ encodeURIComponent(val[0])) #{val[0]}
 																			
 										td #{val[1]}
-										td: button.btn.btn-info.btn-lg(type='button' data-toggle='modal' data-target='#exampleModal' data-top= val[3] data-title= val[2] data-link= val[0] data-total= val[1] data-index= val[4]) Update
+										td: button.btn.btn-info.btn-lg(type='button' data-toggle='modal' data-target='#exampleModal' data-top= val[3] data-title= val[2] data-link= val[0] data-total= val[1] data-index= val[4]) Edit
 
 												
 											
